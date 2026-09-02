@@ -58,12 +58,13 @@ const submitForm = () => {
         router.push('/home')
       }
       else{
-        ElMessage({message: '登录失败', type: 'error', plain: true, })
+        ElMessage({message: res.data.msg || '登录失败', type: 'error', plain: true, })
       }
     })
     .catch((err: any) => {
       console.log("登录失败：", err)
-      ElMessage({message: '登录失败', type: 'error', plain: true,})
+      const msg = err?.response?.data?.msg
+      ElMessage({message: msg || '登录失败', type: 'error', plain: true,})
     })
 }
 

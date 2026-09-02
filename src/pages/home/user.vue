@@ -33,14 +33,6 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="密码" style ="width: 18%" align="center">
-                <template #default="scope">
-                    <div style="display: flex; align-items: center; justify-content: center;">
-                        <span style="margin-left: 10px">{{ scope.row.password }}</span>
-                    </div>
-                </template>
-            </el-table-column>
-
             <el-table-column label="权限" style ="width: 18%" align="center">
                 <template #default="scope">
                     <div style="display: flex; align-items: center; justify-content: center;">
@@ -53,6 +45,9 @@
                 <template #default="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">
                         编辑
+                    </el-button>
+                    <el-button size="small" type="warning" @click="handleResetPwd(scope.row)">
+                        重置密码
                     </el-button>
                     <el-button
                         size="small"
@@ -90,9 +85,6 @@
                 <el-form-item label="用户名" :label-width="formLabelWidth">
                     <el-input v-model="editForm.username" autocomplete="off"/>
                 </el-form-item>
-                <el-form-item label="密码" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.password" autocomplete="off"/>
-                </el-form-item>
                 <el-form-item label="权限" :label-width="formLabelWidth">
                     <el-select v-model="editForm.role" placeholder="Select" style="width: 240px">
                         <el-option
@@ -123,7 +115,7 @@
                     <el-input v-model="addForm.username" autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="密码" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.password" autocomplete="off"/>
+                    <el-input v-model="addForm.password" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
                 <el-form-item label="权限" :label-width="formLabelWidth">
                     <el-select v-model="addForm.role" placeholder="Select" style="width: 240px">
@@ -146,6 +138,28 @@
             </template>
         </el-dialog>
 
+        <el-dialog v-model="dialogResetPwdVisible" title="重置密码" width="500">
+            <el-form :model="resetPwdForm">
+                <el-form-item label="账号" :label-width="formLabelWidth">
+                    <el-input v-model="resetPwdForm.account" disabled/>
+                </el-form-item>
+                <el-form-item label="新密码" :label-width="formLabelWidth">
+                    <el-input v-model="resetPwdForm.password" type="password" show-password autocomplete="new-password" placeholder="请输入新密码"/>
+                </el-form-item>
+                <el-form-item label="确认密码" :label-width="formLabelWidth">
+                    <el-input v-model="confirmPassword" type="password" show-password autocomplete="new-password" placeholder="请再次输入新密码"/>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="dialogResetPwdVisible = false">取消</el-button>
+                <el-button type="primary" @click="handleResetPwdConfirm">
+                    确定
+                </el-button>
+            </div>
+            </template>
+        </el-dialog>
+
 
     </el-card>
   </div>
@@ -160,10 +174,13 @@ import { ElMessage, type ComponentSize } from 'element-plus'
 
 const dialogEditFormVisible = ref(false)
 const dialogAddFormVisible = ref(false)
+const dialogResetPwdVisible = ref(false)
 const formLabelWidth = '100px'
 
 const editForm = reactive({ id: 0, account: '', username: '', password: '', role: 0 })
 const addForm = reactive({ account: '', username: '', password: '', role: 0 })
+const resetPwdForm = reactive({ id: 0, account: '', username: '', password: '', role: 0 })
+const confirmPassword = ref('')
 const roleOptions = [
   { value: 0, label: '管理员' },
   { value: 1, label: '平台使用人员' }
@@ -212,6 +229,36 @@ const handleEdit = (index: number, row: User) => {
     editForm.username = row.username
     editForm.password = row.password
     editForm.role = row.role
+}
+
+const handleResetPwd = (row: User) => {
+    resetPwdForm.id = row.id
+    resetPwdForm.account = row.account
+    resetPwdForm.username = row.username
+    resetPwdForm.role = row.role
+    resetPwdForm.password = ''
+    confirmPassword.value = ''
+    dialogResetPwdVisible.value = true
+}
+
+const handleResetPwdConfirm = () => {
+    if (!resetPwdForm.password) {
+        ElMessage({message: '请输入新密码!', type: 'warning', plain: true,})
+        return
+    }
+    if (resetPwdForm.password !== confirmPassword.value) {
+        ElMessage({message: '两次输入的密码不一致!', type: 'warning', plain: true,})
+        return
+    }
+    edit_user(resetPwdForm).then((res: any) => {
+        if(res.data.code === 200){
+            ElMessage({message: '密码重置成功!', type: 'success', plain: true,})
+            dialogResetPwdVisible.value = false
+        }
+    }).catch((err: any) => {
+        console.log('重置密码失败: '+ err)
+        ElMessage({message: '重置密码失败!', type: 'error', plain: true,})
+    })
 }
 
 const handleDelete = (index: number, row: User) => {
