@@ -85,8 +85,8 @@ const handleClickDialog = () => {
 }
 
 .main-content {
-  background-color: #f0f2f5;
-  padding: 20px;
+  background-color: #f6f7fb;
+  padding: 24px;
   overflow-y: auto;
 }
 </style>

@@ -27,60 +27,68 @@ defineProps<Props>()
 
 <style scoped>
 .stat-card {
-  border-radius: 8px;
-  transition: all 0.3s;
+  border-radius: 16px;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
 }
 
 .stat-content {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
+/* 图标：浅色底 + 彩色图标 */
 .stat-icon {
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  flex-shrink: 0;
 }
 
 .card-blue .stat-icon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #eff6ff;
+  color: #3b82f6;
 }
 
 .card-green .stat-icon {
-  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+  background: #ecfdf5;
+  color: #10b981;
 }
 
 .card-orange .stat-icon {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  background: #fff7ed;
+  color: #f59e0b;
 }
 
 .card-purple .stat-icon {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  background: #ecfeff;
+  color: #06b6d4;
 }
 
 .stat-info {
   flex: 1;
+  min-width: 0;
 }
 
 .stat-value {
-  font-size: 28px;
-  font-weight: 600;
-  color: #303133;
-  margin-bottom: 5px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+  letter-spacing: -0.5px;
 }
 
 .stat-label {
-  font-size: 14px;
-  color: #909399;
+  font-size: 13px;
+  color: #94a3b8;
 }
 </style>

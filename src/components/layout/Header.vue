@@ -7,7 +7,10 @@
       </el-breadcrumb>
     </div>
     <div class="header-right">
-      <el-icon class="header-icon"><Bell @click="handleBellClick" /></el-icon>
+      <div class="icon-btn-wrap">
+        <el-icon class="header-icon" @click="handleBellClick"><Bell /></el-icon>
+        <span class="badge-dot"></span>
+      </div>
       <el-dropdown>
         <div class="user-info">
           <el-avatar :size="35" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
@@ -76,12 +79,15 @@ const handleBellClick = () => {
 
 <style scoped>
 .header {
-  background-color: #fff;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  padding: 0 24px;
+  border-bottom: 1px solid #f1f5f9;
   z-index: 10;
   flex-shrink: 0;
 }
@@ -95,27 +101,54 @@ const handleBellClick = () => {
 .menu-icon {
   font-size: 20px;
   cursor: pointer;
-  color: #5a5e66;
+  color: #475569;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .menu-icon:hover {
-  color: #409EFF;
+  color: #3b82f6;
+  background: #eff6ff;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
+}
+
+/* 图标按钮容器（含红点） */
+.icon-btn-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header-icon {
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  color: #5a5e66;
+  color: #475569;
+  padding: 9px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
 }
 
 .header-icon:hover {
-  color: #409EFF;
+  color: #3b82f6;
+  background: #eff6ff;
+}
+
+.badge-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f43f5e;
+  border: 2px solid #fff;
 }
 
 .user-info {
@@ -123,10 +156,18 @@ const handleBellClick = () => {
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.user-info:hover {
+  background: #f8fafc;
 }
 
 .username {
   font-size: 14px;
-  color: #303133;
+  color: #334155;
+  font-weight: 500;
 }
 </style>

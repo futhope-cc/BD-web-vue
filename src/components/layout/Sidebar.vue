@@ -1,15 +1,13 @@
 <template>
-  <el-aside :width="isCollapse ? '64px' : '220px'" class="sidebar">
+  <el-aside :width="isCollapse ? '64px' : '230px'" class="sidebar">
     <div class="logo-section">
+      <div class="logo-dot"></div>
       <h2 v-if="!isCollapse">行为检测系统</h2>
       <h2 v-else class="logo-short">BD</h2>
     </div>
     <el-menu
       :default-active="activeMenu"
       class="sidebar-menu"
-      background-color="#304156"
-      text-color="#bfcbd9"
-      active-text-color="#409EFF"
       :collapse="isCollapse"
       @select="handleMenuSelect"
     >
@@ -103,38 +101,87 @@ defineExpose({
 
 <style scoped>
 .sidebar {
-  background-color: #304156;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   flex-shrink: 0;
-  transition: width 0.3s;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Logo 区 */
 .logo-section {
-  height: 60px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #2b3947;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.logo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+  flex-shrink: 0;
 }
 
 .logo-section h2 {
-  color: #fff;
-  font-size: 18px;
+  color: #f1f5f9;
+  font-size: 17px;
   margin: 0;
   font-weight: 600;
+  letter-spacing: 1px;
+  white-space: nowrap;
 }
 
 .logo-short {
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
 
+/* 菜单：透明背景 + 圆角高亮项 */
 .sidebar-menu {
   border-right: none;
+  background: transparent !important;
+  padding: 12px 10px;
+  --el-menu-bg-color: transparent;
+  --el-menu-text-color: #94a3b8;
+  --el-menu-active-color: #ffffff;
+  --el-menu-hover-bg-color: rgba(255, 255, 255, 0.06);
 }
 
-.sidebar-menu .el-menu-item {
-  height: 50px;
-  line-height: 50px;
+.sidebar-menu :deep(.el-menu-item),
+.sidebar-menu :deep(.el-sub-menu__title) {
+  height: 46px;
+  line-height: 46px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu :deep(.el-menu-item:hover),
+.sidebar-menu :deep(.el-sub-menu__title:hover) {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #e2e8f0 !important;
+}
+
+/* 激活项：渐变药丸 */
+.sidebar-menu :deep(.el-menu-item.is-active) {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+/* 子菜单激活态 */
+.sidebar-menu :deep(.el-sub-menu.is-active > .el-sub-menu__title) {
+  color: #e2e8f0 !important;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu) {
+  background: rgba(0, 0, 0, 0.15) !important;
+  border-radius: 10px;
+  padding: 4px 0;
 }
 </style>
